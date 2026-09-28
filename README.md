@@ -2,9 +2,11 @@ Preparacion de una infraestructura con vagrant
 
 Clona el repositorio y accede a la carpeta
 
-` git clone https://github.com/pes130/vagrantsad.git `
+```bash 
+git clone https://github.com/pes130/vagrantsad.git 
+cd vagrantsad 
+```
 
-` cd vagrantsad `
 
 Para abrir vagrant
 
