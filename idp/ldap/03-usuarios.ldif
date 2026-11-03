@@ -1,0 +1,29 @@
+# Administrador de sistemas (tú)
+dn: uid=aitor.urena,ou=usuarios,dc=aur,dc=internal
+objectClass: inetOrgPerson
+objectClass: posixAccount
+uid: aitor.urena
+cn: Aitor Ureña
+sn: Ureña
+givenName: Aitor
+mail: aitor.urena@aur.internal
+uidNumber: 10001
+gidNumber: 10000
+homeDirectory: /home/aitor.urena
+loginShell: /bin/bash
+userPassword: {SSHA}vFu8S9MZxNHMmwME9LQC1iqnVjtVTyiz
+
+# Empleado
+dn: uid=luis.martin,ou=usuarios,dc=aur,dc=internal
+objectClass: inetOrgPerson
+objectClass: posixAccount
+uid: luis.martin
+cn: Luis Martín
+sn: Martín
+givenName: Luis
+mail: luis.martin@aur.internal
+uidNumber: 10002
+gidNumber: 10000
+homeDirectory: /home/luis.martin
+loginShell: /bin/bash
+userPassword: {SSHA}8JO7MRCRb2cEucsibLKo/5e06F85cAd8
