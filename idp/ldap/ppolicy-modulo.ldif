@@ -1,0 +1,18 @@
+# 1) Cargar el módulo ppolicy
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: ppolicy
+# 2) Activar el overlay sobre nuestro directorio e indicar la política por defecto
+dn: olcOverlay=ppolicy,olcDatabase={1}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcPPolicyConfig
+olcOverlay: ppolicy
+olcPPolicyDefault: cn=default,ou=politicas,dc=aur,dc=internal
+olcPPolicyHashCleartext: TRUE
+• olcPPolicyDefault: el DN de la entrada que contendrá la política (la creamos en el paso
+siguiente).
+• olcPPolicyHashCleartext: si alguien cambia una contraseña enviándola en claro, se
+guarda su hash, no el texto.
+sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f /vagrant/idp/ldap/ppolicy-modulo.ldif

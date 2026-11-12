@@ -10,3 +10,6 @@ Thumbs.db
 id_ed25519
 id_ed25519.pub
 adminpc/claves-ssh/
+# Práctica 3: secretos que NUNCA se suben a Git
+idp/tls/idp.key
+idp/ca/
