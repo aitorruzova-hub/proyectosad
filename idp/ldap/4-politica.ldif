@@ -2,6 +2,7 @@
 dn: ou=politicas,dc=aur,dc=internal
 objectClass: organizationalUnit
 ou: politicas
+
 dn: cn=default,ou=politicas,dc=aur,dc=internal
 objectClass: organizationalRole
 objectClass: pwdPolicy
