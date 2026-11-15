@@ -26,4 +26,5 @@ uidNumber: 10002
 gidNumber: 10000
 homeDirectory: /home/luis.martin
 loginShell: /bin/bash
-userPassword: {SSHA}8JO7MRCRb2cEucsibLKo/5e06F85cAd8
+userPassword: {SSHA}+j9PzuKhazMKnAkImUs/Vm+ibDs/3xME
+
