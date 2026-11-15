@@ -89,3 +89,15 @@ grep -q '^interface eth0' /etc/dhcpcd.conf || cat >> /etc/dhcpcd.conf <<'EOF'
 interface eth0
 nogateway
 EOF
+echo "=> Acceso de los administradores de LDAP..."
+# Las claves públicas se piden a LDAP (a través de SSSD)
+cat > /etc/ssh/sshd_config.d/10-ldap.conf <<'SSHD'
+AuthorizedKeysCommand /usr/bin/sss_ssh_authorizedkeys
+AuthorizedKeysCommandUser nobody
+SSHD
+# El grupo admins de LDAP tiene sudo (con su contraseña de LDAP)
+echo "%admins ALL=(ALL:ALL) ALL" > /etc/sudoers.d/admins
+chmod 440 /etc/sudoers.d/admins
+visudo -c
+sshd -t
+systemctl restart ssh

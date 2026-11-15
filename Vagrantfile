@@ -1,6 +1,15 @@
 N = "11" # Tu número de clase
 iniciales = "AUR"
 
+# Secretos (contraseñas): se leen del fichero .env, que NO se sube a Git
+secretos = {}
+if File.exist?(".env")
+  File.readlines(".env").each do |linea|
+    clave, valor = linea.strip.split("=", 2)
+    secretos[clave] = valor if valor && !clave.start_with?("#")
+  end
+end
+
 Vagrant.configure("2") do |config|
   # 1. Evitar que vagrant-vbguest intente instalar headers antes del aprovisionamiento
   if Vagrant.has_plugin?("vagrant-vbguest")
@@ -66,7 +75,11 @@ Vagrant.configure("2") do |config|
       apt-get update -y
       SHELL
 
-      idp.vm.provision "shell", path: "idp/provision.sh"
+      idp.vm.provision "shell", path: "idp/provision.sh", env: {
+        "DOMINIO" => "#{iniciales}.internal",
+        "ORGANIZACION" => "Empresa #{iniciales}",
+        "LDAP_ADMIN_PASS" => secretos["LDAP_ADMIN_PASS"]
+      }
       # eliminar default gw en eth0 – red NAT creada por defecto
       idp.vm.provision "shell",
         run: "always",
@@ -111,9 +124,10 @@ Vagrant.configure("2") do |config|
         empleado.vm.hostname = "empleado-pes"
         empleado.vm.network "private_network", ip: "172.2.#{N}.100", netmask:"255.255.255.0", virtualbox__intnet: "red_lan"
         empleado.vm.provision "shell", path: "empleado/provision.sh"
+        empleado.vm.provision "shell", path: "comun/cliente-ldap.sh", args: ["empleado"]
         empleado.vm.provision "shell",
             run: "always",
-            inline: "ip route replace default via 172.2.#{N}.1 systemctl try-restart sssd || true"
+            inline: "ip route replace default via 172.2.#{N}.1; systemctl try-restart sssd || true"
         empleado.vm.provider "virtualbox" do |vb|
           # ...
           vb.memory = "400" # <-- CAMBIO 2: Darle al menos 512 MB de RAM
@@ -160,9 +174,10 @@ Vagrant.configure("2") do |config|
           "/tmp/id_ed25519.pub"
           www.vm.provision "shell", path: "www/provision.sh"
           # eliminar default gw en eth0 – red NAT creada por defecto
+          www.vm.provision "shell", path: "comun/cliente-ldap.sh", args: ["www"]
           www.vm.provision "shell",
               run: "always",
-              inline: "ip route replace default via 172.1.#{N}.1 systemctl try-restart sssd || true"
+              inline: "ip route replace default via 172.1.#{N}.1; systemctl try-restart sssd || true"
           www.vm.provider "virtualbox" do |vb|
             vb.name = "www-dmz"
             vb.gui = false

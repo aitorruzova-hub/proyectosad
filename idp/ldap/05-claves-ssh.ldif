@@ -1,0 +1,8 @@
+# Clave pública SSH del administrador (la misma de adminpc/claves-ssh/clave_admin.pub)
+dn: uid=aitor.urena,ou=usuarios,dc=aur,dc=internal
+changetype: modify
+add: objectClass
+objectClass: ldapPublicKey
+-
+add: sshPublicKey
+sshPublicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINc77nrEyyBKPothLAOA85adx+M5TaZwAz3E/2XZhJPI admin_aitor@adminpc
